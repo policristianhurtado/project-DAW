@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="card">
+    <h3 class="text-center">Menu List</h3>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-8">
+          <div class="form-group form-inline">
+            Search menu
+            <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="searchTerm"
+              (input)="search($event.target.value)" placeholder="name" />
+          </div>
+        </div>
+        <div class="col-4">
+          <a href="/add_menu" class="btn btn-primary">Add</a>
+        </div>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+          <th>Id Menu</th>
+          <th>Name</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of menuSet | listFilterName: searchTerm ; let i = index ">
+            <td>{{item.id_menu}}</td>
+            <td>{{item.name}}</td>
+            <td>
+              <button class="btn btn-info btn-sm" (click)="triggerModal(modalData, item)">
+                Edit </button>
+              &nbsp;
+              <button class='btn btn-danger btn-sm' (click)="deleteMenu(item.id_menu)">
+                Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #modalData let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Menu</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div style="width: 400px; margin: auto;">
+      <div class="submit-form">
+
+        <div class="form-group">
+          <label for="id_menu">Id</label>
+          <input disabled type="text" class="form-control" id="id_menu" required [(ngModel)]="currentMenu.id_menu"
+            name="id_menu" />
+        </div>
+
+        <div class="form-group">
+          <label for="name">NAME</label>
+          <input type="text" class="form-control" id="name" required [(ngModel)]="currentMenu.name" name="name" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateMenu()"
+      (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

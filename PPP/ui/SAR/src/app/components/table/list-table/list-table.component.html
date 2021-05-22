@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="card">
+    <h3 class="text-center">Table List</h3>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-8">
+          <div class="form-group form-inline">
+            Search table
+            <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="searchTerm"
+              (input)="search($event.target.value)" placeholder="Location" />
+          </div>
+        </div>
+        <div class="col-4">
+          <a href="/add_table" class="btn btn-primary">Add</a>
+        </div>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+          <th>Id Table</th>
+          <th>Table Number</th>
+          <th>Location</th>
+          <th>State</th>
+          <th>Responsible</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tableSet | listFilterLocation: searchTerm ; let i = index ">
+            <td>{{item.id_table}}</td>
+            <td>{{item.table_number}}</td>
+            <td>{{item.location}}</td>
+            <td>{{item.state}}</td>
+            <td>{{item.responsible}}</td>
+            <td>
+              <button class="btn btn-info btn-sm" (click)="triggerModal(modalData, item)">
+                Edit </button>
+              &nbsp;
+              <button class='btn btn-danger btn-sm' (click)="deleteTable(item.id_table)">
+                Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #modalData let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Table</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div style="width: 400px; margin: auto;">
+      <div class="submit-form">
+
+        <div class="form-group">
+          <label for="id_table">Id</label>
+          <input disabled type="text" class="form-control" id="id_table" required [(ngModel)]="currentTable.id_table"
+            name="id_table" />
+        </div>
+
+        <div class="form-group">
+          <label for="table_number">Table Number</label>
+          <input type="text" class="form-control" id="table_number" required [(ngModel)]="currentTable.table_number"
+            name="table_number" />
+        </div>
+
+        <div class="form-group">
+          <label for="responsible">Responsible</label>
+          <select class="form-control" [(ngModel)]="currentTable.responsible" name="responsible" id="responsible">
+            <option *ngFor="let item of personSet" [value]="item.id_person">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" class="form-control" id="location" required [(ngModel)]="currentTable.location"
+            name="location" />
+        </div>
+
+        <div class="form-group">
+          <label for="state">State</label>
+          <select class="form-control" [(ngModel)]="currentTable.state" name="state" id="state">
+            <option value="occupied">Occupied</option>
+            <option value="available">Available</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateTable()"
+      (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

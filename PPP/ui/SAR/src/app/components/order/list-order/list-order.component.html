@@ -1,0 +1,143 @@
+<div class="container">
+  <div class="card">
+    <h3 class="text-center">Order List</h3>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-8">
+          <div class="form-group form-inline">
+            Search order
+            <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="searchTerm"
+              (input)="search($event.target.value)" placeholder="name" />
+          </div>
+        </div>
+        <div class="col-4">
+          <a href="/add_order" class="btn btn-primary">Add</a>
+        </div>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+          <th>Id Order</th>
+          <th>Customer</th>
+          <th>Product</th>
+          <th>Table</th>
+          <th>Comment</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of orderSet ">
+            <td>{{item.id_order}}</td>
+            <td>{{item.customer_id}}</td>
+            <td>{{item.product_id}}</td>
+            <td>{{item.table_id}}</td>
+            <td>{{item.note}}</td>
+            <td>
+              <button class="btn btn-info btn-sm" (click)="triggerModal(modalData, item)">
+                Edit </button>
+              &nbsp;
+              <button class='btn btn-danger btn-sm' (click)="deleteOrder(item.id_order)">
+                Delete</button>
+                &nbsp;
+              <button class="btn btn-info btn-sm" (click)="triggerModalState(modalState, item)">
+                State</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #modalData let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Order</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div style="width: 400px; margin: auto;">
+      <div class="submit-form">
+
+        <div class="form-group">
+          <label for="id_order">Id</label>
+          <input disabled type="text" class="form-control" id="id_order" required [(ngModel)]="currentOrder.id_order"
+            name="id_order" />
+        </div>
+
+        <div class="form-group">
+          <label for="customer_id">Customer</label>
+          <select class="form-control" [(ngModel)]="currentOrder.customer_id" name="customer_id" id="customer_id">
+            <option *ngFor="let item of customerSet" [value]="item.id_person">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="table_id">Table</label>
+          <select class="form-control" [(ngModel)]="currentOrder.table_id" name="table_id" id="table_id">
+            <option *ngFor="let item of tableSet" [value]="item.id_table">{{item.table_number}}, {{item.location}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="product_id">Product</label>
+          <select class="form-control" [(ngModel)]="currentOrder.product_id" name="product_id" id="product_id">
+            <option *ngFor="let item of productSet" [value]="item.id_product">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="note">Comment</label>
+          <textarea class="form-control rounded-0" id="note" required [(ngModel)]="currentOrder.note" name="note" rows="3"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateOrder()"
+      (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #modalState let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-state">State Order</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div style="width: 400px; margin: auto;">
+      <div class="submit-form">
+
+        <div class="form-group">
+          <label for="id_order">Id</label>
+          <input disabled type="text" class="form-control" id="id_order" required [(ngModel)]="currentState.id_order"
+            name="id_order" />
+        </div>
+
+        <div class="form-group">
+          <label for="stage">Stage</label>
+          <select class="form-control" [(ngModel)]="currentState.stage" name="stage" id="stage">
+            <option value="to_do">To Do</option>
+            <option value="in_progress">In Progress</option>
+            <option value="finalized">Finalized</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="stateOrder()"
+      (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

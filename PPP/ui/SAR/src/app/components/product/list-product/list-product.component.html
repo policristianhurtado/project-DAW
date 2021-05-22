@@ -1,0 +1,110 @@
+<div class="container">
+  <div class="card">
+    <h3 class="text-center">Product List</h3>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-8">
+          <div class="form-group form-inline">
+            Search product
+            <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="searchTerm"
+              (input)="search($event.target.value)" placeholder="Name" />
+          </div>
+        </div>
+        <div class="col-4">
+          <a href="/add_product" class="btn btn-primary">Add</a>
+        </div>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+          <th>Id Product</th>
+          <th>name</th>
+          <th>price</th>
+          <th>description</th>
+          <th>stage</th>
+          <th>section_id</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of productSet | listFilterName: searchTerm ; let i = index ">
+            <td>{{item.id_product}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.stage}}</td>
+            <td>{{item.section_id}}</td>
+            <td>
+              <button class="btn btn-info btn-sm" (click)="triggerModal(modalData, item)">
+                Edit </button>
+              &nbsp;
+              <button class='btn btn-danger btn-sm' (click)="deleteProduct(item.id_product)">
+                Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #modalData let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Product</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div style="width: 400px; margin: auto;">
+      <div class="submit-form">
+
+        <div class="form-group">
+          <label for="id_product">Id</label>
+          <input disabled type="text" class="form-control" id="id_product" required [(ngModel)]="currentProduct.id_product"
+            name="id_product" />
+        </div>
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" required [(ngModel)]="currentProduct.name"
+            name="name" />
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="text" class="form-control" id="price" required [(ngModel)]="currentProduct.price"
+            name="price" />
+        </div>
+
+        <div class="form-group">
+          <label for="section_id">Section</label>
+          <select class="form-control" [(ngModel)]="currentProduct.section_id" name="section_id" id="section_id">
+            <option *ngFor="let item of sectionSet" [value]="item.id_section">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="stage">Stage</label>
+          <select class="form-control" [(ngModel)]="currentProduct.stage" name="stage" id="stage">
+            <option value="exhausted">Exhausted</option>
+            <option value="available">Available</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descripcion</label>
+          <textarea class="form-control rounded-0" id="description" required [(ngModel)]="currentProduct.description" name="description" rows="3"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateProduct()"
+      (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

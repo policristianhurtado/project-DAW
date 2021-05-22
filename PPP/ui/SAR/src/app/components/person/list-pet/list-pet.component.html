@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="card">
+    <h3 class="text-center">Pet List</h3>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-8">
+          <div class="form-group form-inline">
+            Search pet
+            <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="searchTerm"
+              (input)="search($event.target.value)" placeholder="name" />
+          </div>
+        </div>
+        <div class="col-4">
+          <a href="/add" class="btn btn-primary">Add</a>
+        </div>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+          <th>Id Pet</th>
+          <th>Name</th>
+          <th>Pet Type</th>
+          <th>Race</th>
+          <th>Owner</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of petSet | listFilter: searchTerm ; let i = index ">
+            <td>{{item.id_pet}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.pet_type}}</td>
+            <td>{{item.race}}</td>
+            <td>{{item.owner}}</td>
+            <td>
+              <button class="btn btn-info btn-sm" (click)="triggerModal(modalData, item)">
+                Edit </button>
+              &nbsp;
+              <button class='btn btn-danger btn-sm' (click)="deletePet(item.id_pet)">
+                Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #modalData let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Pet</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div style="width: 400px; margin: auto;">
+      <div class="submit-form">
+
+        <div class="form-group">
+          <label for="id_pet">Id</label>
+          <input disabled type="text" class="form-control" id="id_pet" required [(ngModel)]="currentPet.id_pet"
+            name="id_pet" />
+        </div>
+
+        <div class="form-group">
+          <label for="name">NAME</label>
+          <input type="text" class="form-control" id="name" required [(ngModel)]="currentPet.name" name="name" />
+        </div>
+
+        <div class="form-group">
+          <label for="pet_type">Pet Type</label>
+          <select class="form-control" [(ngModel)]="currentPet.pet_type" name="pet_type" id="pet_type">
+            <option *ngFor="let item of petTypeSet" [value]="item.id_pet_type">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="race">Race</label>
+          <input type="text" class="form-control" id="race" required [(ngModel)]="currentPet.race" name="race" />
+        </div>
+
+        <div class="form-group">
+          <label for="owner">Owner</label>
+          <input type="text" class="form-control" id="owner" required [(ngModel)]="currentPet.owner" name="owner" />
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updatePet()"
+      (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

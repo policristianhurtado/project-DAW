@@ -1,0 +1,39 @@
+<form #myForm="ngForm">
+
+  <div style="width: 400px; margin: auto;">
+    <div class="submit-form">
+      <div *ngIf="!submitted">
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" required [(ngModel)]="section.name" name="name" />
+        </div>
+
+        <div class="form-group">
+          <label for="menu_id">Menu</label>
+          <select class="form-control" [(ngModel)]="section.menu_id" name="menu_id" id="menu_id">
+            <option *ngFor="let item of menuSet" [value]="item.id_menu">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col-3">
+            <button (click)="saveSection()" [disabled]="!myForm.form.valid" class="btn btn-success">Done</button>
+          </div>
+          <div class="col-3">
+            <a class="btn btn-danger" href="/list_section">Cancel</a>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div *ngIf="submitted">
+        <h4>You submitted successfully!</h4>
+        <button class="btn btn-success" (click)="newSection()">Add</button>
+      </div>
+
+    </div>
+  </div>
+  {{msgError}}
+</form>
